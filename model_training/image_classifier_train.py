@@ -17,7 +17,7 @@ class ImageClassifierTrain:
         self.train_loader = trainloader
         self.test_loader = testloader
         self.criterion = nn.CrossEntropyLoss()
-        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=learning_rate, eps=1e-08)
+        self.optimizer = torch.optim.Adam(self.model.parameters(),lr=learning_rate, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
         print("Model, Loss function & Optimizer Initialized...")
         print("Training Starting....")
 
@@ -67,7 +67,7 @@ class ImageClassifierTrain:
         if not exists(checkpoint_path):
             makedirs(checkpoint_path)
 
-        filename = join(checkpoint_path, 'Image-classifier-epoch-{}.pth'.format(epoch))
+        filename = join(checkpoint_path, 'image-classifier-epoch-{}.pth'.format(epoch))
         torch.save({
             'model': self.model,
             'epoch': epoch,
@@ -80,7 +80,7 @@ class ImageClassifierTrain:
         checkpoint = torch.load(checkpoint_path)
         model = checkpoint['model']
         model.load_state_dict(checkpoint['state_dict'])
-        filename = join(export_path, 'Image_classifier_model.pt')
+        filename = join(export_path, 'image_classifier_model.pt')
         torch.save(model.state_dict(), filename)
         print('Model Exported in this path: {}'.format(export_path))
 

@@ -39,6 +39,6 @@ def main(config):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config_path", type=str, default='07_Custom_CNN_Network/config.json')
+    parser.add_argument("--config_path", type=str, default='model_training/config.json')
     config = parse_input(parser.parse_args())
     main(config)

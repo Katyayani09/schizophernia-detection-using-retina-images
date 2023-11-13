@@ -7,7 +7,7 @@ import torchvision.transforms as transforms
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 
-from .Image_dataset import ImageDataset
+from .image_dataset import ImageDataset
 from .prepare_classification_dataset import DatasetPreparator
 from .detect_normalize_params import RunningAverage
 
@@ -20,23 +20,25 @@ class Dataloader:
         self.normalize_params = RunningAverage()
 
         # Initialization of Dataset Preparation Class
+        print("Preparing Dataset for Training....")
         self.data_prep = DatasetPreparator(self.dataset_path, self.train_path)
         self.csv_path = self.data_prep.dataset_creator()
 
         # Getting Mean and Standard Deviation
+        print("Running Standard Mean and Deviation Calculation for max precision training....")
         running_mean, running_std_deviation = self.normalize_params.param_calculation(config, self.train_path, self.csv_path)
 
         self.transform_train = transforms.Compose([
             transforms.ToPILImage(),
             transforms.RandomRotation(10),
-            transforms.Resize((160, 64)),
+            transforms.Resize((config.training_parameters.image_height, config.training_parameters.image_width)),
             transforms.ToTensor(),
             transforms.Normalize(mean=running_mean, std=running_std_deviation),
         ])
 
         self.transform_test = transforms.Compose([
             transforms.ToPILImage(),
-            transforms.Resize((160, 64)),
+            transforms.Resize((config.training_parameters.image_height, config.training_parameters.image_width)),
             transforms.ToTensor(),
             transforms.Normalize(mean=running_std_deviation, std=running_std_deviation),
         ])
@@ -46,6 +48,7 @@ class Dataloader:
 
         train_data, valid_data = train_test_split(labels, stratify=labels.cls, test_size=0.2)
 
+        print("Splitting Training Dataset and Preprocessing them.....")
         train = ImageDataset(train_data, self.train_path, self.transform_train)
         valid = ImageDataset(valid_data, self.train_path, self.transform_test)
 

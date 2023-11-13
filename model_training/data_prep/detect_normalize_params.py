@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from torch.utils import data
 from torchvision import transforms
 
-from .Image_dataset import ImageDataset
+from .image_dataset import ImageDataset
 
 
 class FiniteRandomSampler(data.Sampler):
@@ -60,9 +60,11 @@ class RunningAverage:
         if ast.literal_eval(config.normalization_param.seed) is not None:
             self.__make_reproducible(config.normalization_param.seed)
 
-        transform = transforms.Compose(
-            [transforms.ToPILImage(), transforms.Resize((160, 64)), transforms.ToTensor()]
-        )
+        transform = transforms.Compose([
+            transforms.ToPILImage(), 
+            transforms.Resize((config.training_parameters.image_height, config.training_parameters.image_width)),
+            transforms.ToTensor()
+            ])
 
         labels = pd.read_csv(csv_path)
         train_data, _ = train_test_split(labels, stratify=labels.cls, test_size=0.2)

@@ -1,8 +1,8 @@
 {
     "project_details": {
-      "project_name": "boxmob",
-      "dataset_path": "/home/phoenix/projects/datasets/custom_datasets/boxing_dataset/",
-      "project_path": "/home/phoenix/projects/test-project/"
+      "project_name": "schizophrenia-detection",
+      "dataset_path": "/Users/apandey/Desktop/projects/kat/schizophernia-detection-using-retina-images/model_training/dataset/training/",
+      "project_path": "/Users/apandey/Desktop/projects/kat/schizophernia-detection-using-retina-images/output"
       },
     "normalization_param":{
       "num_samples": "None",
@@ -14,6 +14,8 @@
       "print_freq": 50
     },
     "training_parameters": {
+      "image_height": 160,
+      "image_width": 64,
       "num_epochs": 2000,
       "learning_rate": 0.0001,
       "batch_size": 512,
